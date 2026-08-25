@@ -51,7 +51,7 @@ export class SpriteLayer extends Container {
         sp.target = seat; sp.update(o, o.sessionId === selected);
       });
     }
-    for (const [id, sp] of this.sprites) if (!seen.has(id)) { this.removeChild(sp); sp.destroy(); this.sprites.delete(id); }
+    for (const [id, sp] of this.sprites) if (!seen.has(id)) { this.removeChild(sp); sp.destroy({ children: true }); this.sprites.delete(id); }
   }
   tick(dt: number): void { for (const sp of this.sprites.values()) sp.tick(dt); }
   positionOf(sessionId: string): { x: number; y: number } | null { const sp = this.sprites.get(sessionId); return sp ? { x: sp.position.x, y: sp.position.y } : null; }

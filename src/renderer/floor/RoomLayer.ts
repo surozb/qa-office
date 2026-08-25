@@ -5,10 +5,8 @@ import type { Station } from '../../shared/types';
 const C = { room: 0x232838, border: 0x39415a, grid: 0x2b3147, text: 0xe9e7dc, dim: 0x6b7390, selected: 0xffb454 };
 
 export class RoomLayer extends Container {
-  private drawn = new Map<string, Container>();
-
   render(stations: Station[], counts: Map<string, number>, selectedStation: string | null): void {
-    this.removeChildren(); this.drawn.clear();
+    for (const child of this.removeChildren()) child.destroy({ children: true });
     for (const s of stations) {
       const r = roomRect(s.grid); const c = new Container(); c.position.set(r.x, r.y);
       const g = new Graphics();
@@ -22,7 +20,7 @@ export class RoomLayer extends Container {
       const count = new Text({ text: n ? `${n} in room` : 'empty', style: { fontFamily: 'Consolas, monospace', fontSize: 10, fill: C.dim } });
       count.anchor.set(1, 0); count.position.set(r.w - 10, 10); c.addChild(count);
       c.eventMode = 'static'; c.cursor = 'pointer'; c.label = `station:${s.id}`;
-      this.addChild(c); this.drawn.set(s.id, c);
+      this.addChild(c);
     }
   }
 }

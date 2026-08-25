@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Application, Container, FederatedPointerEvent } from 'pixi.js';
 import { useOffice } from '../store';
 import { RoomLayer } from './RoomLayer';
@@ -6,9 +6,20 @@ import { SpriteLayer } from './SpriteLayer';
 
 export function Floor() {
   const host = useRef<HTMLDivElement>(null);
-  const state = useOffice((u) => u.state); const selected = useOffice((u) => u.selected); const follow = useOffice((u) => u.follow);
   const select = useOffice((u) => u.select);
   const refs = useRef<{ app: Application; world: Container; rooms: RoomLayer; sprites: SpriteLayer } | null>(null);
+
+  const draw = useCallback(() => {
+    const r = refs.current; if (!r) return;
+    const u = useOffice.getState();
+    if (!u.state) return;
+    const counts = new Map<string, number>();
+    for (const o of u.state.occupants) counts.set(o.stationId, (counts.get(o.stationId) ?? 0) + 1);
+    const selStation = u.selected?.startsWith('station:') ? u.selected.slice(8) : null;
+    const selOcc = u.selected?.startsWith('occupant:') ? u.selected.slice(9) : null;
+    r.rooms.render(u.state.stations, counts, selStation);
+    r.sprites.render(u.state.stations, u.state.occupants, selOcc);
+  }, []);
 
   useEffect(() => {
     let disposed = false;
@@ -34,19 +45,17 @@ export function Floor() {
         } else { world.position.x += (0 - world.position.x) * 0.1; world.position.y += (0 - world.position.y) * 0.1; }
       });
       refs.current = { app, world, rooms, sprites };
+      draw();
     })();
     return () => { disposed = true; refs.current?.app.destroy(true); refs.current = null; };
   }, [select]);
 
   useEffect(() => {
-    const r = refs.current; if (!r || !state) return;
-    const counts = new Map<string, number>();
-    for (const o of state.occupants) counts.set(o.stationId, (counts.get(o.stationId) ?? 0) + 1);
-    const selStation = selected?.startsWith('station:') ? selected.slice(8) : null;
-    const selOcc = selected?.startsWith('occupant:') ? selected.slice(9) : null;
-    r.rooms.render(state.stations, counts, selStation);
-    r.sprites.render(state.stations, state.occupants, selOcc);
-  }, [state, selected, follow]);
+    const unsubscribe = useOffice.subscribe(() => {
+      draw();
+    });
+    return unsubscribe;
+  }, [draw]);
 
   return <div ref={host} style={{ flex: 1, minWidth: 0, minHeight: 0 }} />;
 }
