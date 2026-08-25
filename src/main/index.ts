@@ -4,10 +4,13 @@ import { Observatory } from './observatory';
 import { IPC, type OfficeState } from '../shared/types';
 
 let win: BrowserWindow | undefined;
+let quitting = false;
 const configFile = join(app.isPackaged ? app.getPath('userData') : process.cwd(), 'office.config.json');
 const obs = new Observatory(configFile);
 
-function send(s: OfficeState): void { win?.webContents.send(IPC.state, s); }
+function send(s: OfficeState): void {
+  if (win && !win.isDestroyed()) win.webContents.send(IPC.state, s);
+}
 
 function createWindow(): void {
   win = new BrowserWindow({
@@ -17,6 +20,7 @@ function createWindow(): void {
   if (process.env['ELECTRON_RENDERER_URL']) void win.loadURL(process.env['ELECTRON_RENDERER_URL']);
   else void win.loadFile(join(__dirname, '../renderer/index.html'));
   win.webContents.on('did-finish-load', () => send(obs.state()));
+  win.on('closed', () => { win = undefined; });
 }
 
 app.whenReady().then(async () => {
@@ -28,4 +32,7 @@ app.whenReady().then(async () => {
   createWindow();
   await obs.start();
 });
-app.on('window-all-closed', () => { void obs.stop().finally(() => app.quit()); });
+app.on('window-all-closed', () => {
+  if (quitting) return; quitting = true;
+  void obs.stop().catch(() => undefined).finally(() => app.quit());
+});
