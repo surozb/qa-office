@@ -71,7 +71,9 @@ Claude Code maintains a **live session registry** on disk. Each running session 
   "messagingSocketPath": "\\\\.\\pipe\\LOCAL\\cc-msg-…" }
 ```
 
-- `cwd` is the room. `status` is live-updated (`busy` / `idle`). `name` matches what
+- `cwd` is the room. `status` is live-updated: `busy`, `idle`, or `waiting` (blocked on
+  user input or a permission prompt — found during phase-1 acceptance, 2026-08-25; rendered
+  blue). `name` matches what
   `ListAgents` prints. `pid` + `procStart` together identify a live process (guards
   against PID reuse).
 - Transcripts are appended live to `~/.claude/projects/<cwd-slug>/<sessionId>.jsonl`.
