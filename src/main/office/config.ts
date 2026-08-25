@@ -5,6 +5,8 @@ function isStation(v: unknown): v is Station {
   if (typeof v !== 'object' || v === null) return false;
   const s = v as Record<string, unknown>; const g = s['grid'] as Record<string, unknown> | undefined;
   return typeof s['id'] === 'string' && typeof s['name'] === 'string' && Array.isArray(s['cwds']) && Array.isArray(s['skills'])
+    && (s['cwds'] as unknown[]).every((c) => typeof c === 'string')
+    && (s['skills'] as unknown[]).every((k) => typeof k === 'string')
     && !!g && typeof g['col'] === 'number' && typeof g['row'] === 'number';
 }
 

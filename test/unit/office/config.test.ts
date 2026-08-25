@@ -21,4 +21,10 @@ describe('config', () => {
     saveConfig(f, cfg);
     expect(JSON.parse(readFileSync(f, 'utf8'))).toEqual(cfg);
   });
+  it('rejects a station with non-string cwds entries', () => {
+    const f = join(mkdtempSync(join(tmpdir(), 'cfg-')), 'bad.json');
+    writeFileSync(f, JSON.stringify({ lobbyId: 'x', defaultStationByCwd: {},
+      stations: [{ id: 'x', name: 'x', cwds: [123], skills: [], grid: { col: 0, row: 0 } }] }));
+    expect(() => loadConfig(f)).toThrow(/stations/);
+  });
 });
