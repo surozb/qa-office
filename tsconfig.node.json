@@ -4,5 +4,6 @@
     "strict": true, "noUncheckedIndexedAccess": true, "skipLibCheck": true,
     "composite": true, "types": ["node"], "outDir": "out/tsc-node"
   },
-  "include": ["src/main/**/*", "src/preload/**/*", "src/shared/**/*", "test/**/*", "electron.vite.config.ts", "vitest.config.ts"]
+  "include": ["src/main/**/*", "src/preload/**/*", "src/shared/**/*", "test/**/*", "electron.vite.config.ts", "vitest.config.ts"],
+  "exclude": ["test/unit/renderer/**/*"]
 }
