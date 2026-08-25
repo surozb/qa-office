@@ -1,4 +1,4 @@
-export type SessionStatus = 'busy' | 'idle';
+export type SessionStatus = 'busy' | 'idle' | 'waiting';
 export interface SessionRecord {
   pid: number; sessionId: string; cwd: string; name: string;
   status: SessionStatus; kind: string; procStart: string;

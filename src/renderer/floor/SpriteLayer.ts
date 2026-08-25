@@ -3,7 +3,7 @@ import { roomRect, seatPosition } from './layout';
 import type { Emote, Occupant, Station } from '../../shared/types';
 
 const EMOTE: Record<Emote, string> = { search: '🔍', read: '📖', edit: '✏️', shell: '⌨', browser: '🌐', skill: '⚑', delegate: '👥', think: '…', other: '⋯' };
-const STATUS = { busy: 0xffb454, idle: 0x7dd98f, gone: 0x6b7390 } as const;
+const STATUS = { busy: 0xffb454, idle: 0x7dd98f, waiting: 0x6cb6ff, gone: 0x6b7390 } as const;
 
 class Sprite extends Container {
   target = { x: 0, y: 0 };

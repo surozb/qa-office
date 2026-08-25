@@ -14,6 +14,10 @@ describe('parseSessionFile', () => {
     });
   });
   it('parses idle status', () => { expect(parseSessionFile(fx('live-idle.json'))?.status).toBe('idle'); });
+  it('parses waiting status', () => {
+    const j = JSON.parse(fx('live-busy.json')); j.status = 'waiting';
+    expect(parseSessionFile(JSON.stringify(j))?.status).toBe('waiting');
+  });
   it('never exposes messagingSocketPath', () => {
     expect(JSON.stringify(parseSessionFile(fx('live-busy.json')))).not.toContain('pipe');
   });

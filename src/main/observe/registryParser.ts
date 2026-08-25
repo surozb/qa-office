@@ -1,6 +1,6 @@
 import type { SessionRecord, SessionStatus } from '../../shared/types';
 
-function isStatus(v: unknown): v is SessionStatus { return v === 'busy' || v === 'idle'; }
+function isStatus(v: unknown): v is SessionStatus { return v === 'busy' || v === 'idle' || v === 'waiting'; }
 
 export function parseSessionFile(text: string): SessionRecord | null {
   let raw: unknown;
