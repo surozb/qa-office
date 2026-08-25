@@ -17,8 +17,8 @@ export function SidePanel() {
         <aside className="side">
           <div className="side-head"><h2>{o.name}</h2><div className="side-sub">{o.title ?? 'untitled session'}</div></div>
           <div className="side-body">
-            <div><span className={`pill ${o.status}`}>{o.status}</span><span className="pill walkin">walk-in</span>
-              <button className={follow ? 'btn on' : 'btn'} style={{ float: 'right' }} onClick={toggleFollow}>{follow ? '◉ following' : '○ follow'}</button></div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}><span className={`pill ${o.status}`}>{o.status}</span><span className="pill walkin">walk-in</span>
+              <button className={follow ? 'btn on' : 'btn'} style={{ marginLeft: 'auto' }} onClick={toggleFollow}>{follow ? '◉ following' : '○ follow'}</button></div>
             <dl className="kv">
               <dt>station</dt><dd>{station?.name ?? o.stationId}</dd>
               <dt>branch</dt><dd>{o.branch ?? '—'}</dd>
