@@ -64,4 +64,11 @@ describe('OfficeStore', () => {
     for (let i = 0; i < 5; i++) st.applyEvents([{ kind: 'tool', sessionId: 's1', at: 't', tool: 'Read', emote: 'read', summary: `f${i}` }]);
     expect(st.state().log).toHaveLength(3); expect(st.state().log.at(-1)?.text).toBe('▸ Read  f4');
   });
+  it('state returns a defensive copy of stations', () => {
+    const st = mk();
+    const s1 = st.state();
+    s1.stations[0]!.cwds.push('NEW');
+    const s2 = st.state();
+    expect(s2.stations[0]?.cwds).toEqual(['C:\\A\\repo']);
+  });
 });

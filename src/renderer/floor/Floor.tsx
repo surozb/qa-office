@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Application, Container, FederatedPointerEvent } from 'pixi.js';
 import { useOffice } from '../store';
+import { gridSize } from './layout';
 import { RoomLayer } from './RoomLayer';
 import { SpriteLayer } from './SpriteLayer';
 
 export function Floor() {
   const host = useRef<HTMLDivElement>(null);
   const select = useOffice((u) => u.select);
-  const refs = useRef<{ app: Application; world: Container; rooms: RoomLayer; sprites: SpriteLayer } | null>(null);
+  const refs = useRef<{ app: Application; world: Container; rooms: RoomLayer; sprites: SpriteLayer; fitScale: number } | null>(null);
 
   const draw = useCallback(() => {
     const r = refs.current; if (!r) return;
@@ -19,6 +20,10 @@ export function Floor() {
     const selOcc = u.selected?.startsWith('occupant:') ? u.selected.slice(9) : null;
     r.rooms.render(u.state.stations, counts, selStation);
     r.sprites.render(u.state.stations, u.state.occupants, selOcc);
+    const { w, h } = gridSize(u.state.stations);
+    const s = w > 0 && h > 0 ? Math.min(1, r.app.screen.width / w, r.app.screen.height / h) : 1;
+    r.fitScale = s;
+    r.world.scale.set(s);
   }, []);
 
   useEffect(() => {
@@ -41,13 +46,15 @@ export function Floor() {
         const u = useOffice.getState();
         if (u.follow && u.selected?.startsWith('occupant:')) {
           const p = sprites.positionOf(u.selected.slice(9));
-          if (p) { world.position.x += (app.screen.width / 2 - p.x - world.position.x) * 0.1; world.position.y += (app.screen.height / 2 - p.y - world.position.y) * 0.1; }
+          if (p) { world.position.x += (app.screen.width / 2 - p.x * refs.current!.fitScale - world.position.x) * 0.1; world.position.y += (app.screen.height / 2 - p.y * refs.current!.fitScale - world.position.y) * 0.1; }
         } else { world.position.x += (0 - world.position.x) * 0.1; world.position.y += (0 - world.position.y) * 0.1; }
       });
-      refs.current = { app, world, rooms, sprites };
+      const handleResize = () => { draw(); };
+      app.renderer.on('resize', handleResize);
+      refs.current = { app, world, rooms, sprites, fitScale: 1 };
       draw();
     })();
-    return () => { disposed = true; refs.current?.app.destroy(true); refs.current = null; };
+    return () => { disposed = true; if (refs.current) { refs.current.app.renderer.off('resize'); refs.current.app.destroy(true); } refs.current = null; };
   }, [select]);
 
   useEffect(() => {

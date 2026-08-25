@@ -66,6 +66,6 @@ export class OfficeStore extends EventEmitter {
   }
 
   state(): OfficeState {
-    return { stations: this.cfg.stations, lobbyId: this.cfg.lobbyId, occupants: [...this.occ.values()].map((o) => ({ ...o, tokens: { ...o.tokens } })), log: [...this.log], generatedAt: this.now() };
+    return { stations: this.cfg.stations.map((s) => ({ ...s, cwds: [...s.cwds], skills: [...s.skills], grid: { ...s.grid } })), lobbyId: this.cfg.lobbyId, occupants: [...this.occ.values()].map((o) => ({ ...o, tokens: { ...o.tokens } })), log: [...this.log], generatedAt: this.now() };
   }
 }

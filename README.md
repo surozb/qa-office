@@ -12,6 +12,9 @@ Plan:   `docs/superpowers/plans/2026-08-25-qa-office-phase1-observatory.md`
     npm install
     npm run dev          # opens the office; start `claude` in any terminal to see it appear
 
+If `npm run dev` fails with `Error: Electron uninstall`, the Electron binary was not
+downloaded during install — run `node node_modules/electron/install.js` once.
+
 ## Verify
     npm test             # pure-function tests over fixtures (no Claude, no API key)
     npm run lint         # includes the read-only guard for src/main/observe
