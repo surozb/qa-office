@@ -1,0 +1,34 @@
+{
+  "lobbyId": "lobby",
+  "defaultStationByCwd": {
+    "C:\\MaitriAutomation\\capture-qa-automation": "automation-lab",
+    "C:\\MaitriAutomation\\capture-qa-automation-react": "automation-lab",
+    "C:\\MaitriAutomation\\CaptureManage": "automation-lab",
+    "C:\\MaitriAutomation\\newunique-tool": "automation-lab"
+  },
+  "stations": [
+    { "id": "intake",         "name": "Intake",           "grid": { "col": 0, "row": 0 },
+      "cwds": ["C:\\MaitriAutomation\\capture-qa-automation", "C:\\MaitriAutomation\\capture-qa-automation-react", "C:\\MaitriAutomation\\CaptureManage"],
+      "skills": ["from-jira", "jira-fetcher"] },
+    { "id": "test-design",    "name": "Test Design",      "grid": { "col": 1, "row": 0 },
+      "cwds": ["C:\\MaitriAutomation\\capture-qa-automation", "C:\\MaitriAutomation\\capture-qa-automation-react", "C:\\MaitriAutomation\\CaptureManage"],
+      "skills": ["write-test-case", "write-test-case-capture", "qase-fetcher", "code-walker", "write-spec"] },
+    { "id": "automation-lab", "name": "Automation Lab",   "grid": { "col": 2, "row": 0 },
+      "cwds": ["C:\\MaitriAutomation\\capture-qa-automation", "C:\\MaitriAutomation\\capture-qa-automation-react", "C:\\MaitriAutomation\\CaptureManage", "C:\\MaitriAutomation\\newunique-tool"],
+      "skills": ["write-automation-test", "write-automation-test-capture", "dom-locator-automation", "add-page-coverage", "add-api-coverage"] },
+    { "id": "data-kitchen",   "name": "Data Kitchen",     "grid": { "col": 3, "row": 0 },
+      "cwds": ["C:\\MaitriAutomation\\CaptureImpDatabase", "C:\\MaitriAutomation\\capture-qa-automation", "C:\\MaitriAutomation\\CaptureManage"],
+      "skills": ["add-test-data-generator", "add-test-data-generator-capture", "database-explorer"] },
+    { "id": "ci-watchtower",  "name": "CI Watchtower",    "grid": { "col": 0, "row": 1 },
+      "cwds": ["C:\\MaitriAutomation\\capture-qa-automation", "C:\\MaitriAutomation\\CaptureManage"],
+      "skills": ["jenkins-build-investigator"] },
+    { "id": "triage",         "name": "Triage & Repair",  "grid": { "col": 1, "row": 1 },
+      "cwds": ["C:\\MaitriAutomation\\capture-qa-automation", "C:\\MaitriAutomation\\capture-qa-automation-react", "C:\\MaitriAutomation\\CaptureManage"],
+      "skills": ["heal-automation-test", "heal-automation-test-capture", "triage-bug", "triage-bug-capture"] },
+    { "id": "records",        "name": "Records Office",   "grid": { "col": 2, "row": 1 },
+      "cwds": ["C:\\MaitriAutomation\\capture-qa-automation", "C:\\MaitriAutomation\\capture-qa-automation-react", "C:\\MaitriAutomation\\CaptureManage"],
+      "skills": ["qase-integration", "check-automation-coverage", "check-automation-coverage-capture", "audit-qase-data", "test-coverage-analyzer", "generate-qase-csv"] },
+    { "id": "your-desk",      "name": "Your Desk",        "grid": { "col": 3, "row": 1 }, "cwds": [], "skills": [] },
+    { "id": "lobby",          "name": "Lobby",            "grid": { "col": 0, "row": 2 }, "cwds": [], "skills": [] }
+  ]
+}
