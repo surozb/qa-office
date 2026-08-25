@@ -4,7 +4,6 @@
   "private": true,
   "description": "Pixel-office control tower over live Claude Code sessions for QA automation.",
   "main": "./out/main/index.js",
-  "type": "module",
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
