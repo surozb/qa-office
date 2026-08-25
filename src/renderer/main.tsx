@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import type { OfficeState } from '../shared/types';
+import { useOffice } from './store';
+import { Floor } from './floor/Floor';
 
 function App() {
-  const [s, setS] = useState<OfficeState | null>(null);
-  useEffect(() => { const off = window.office.onState(setS); window.office.requestState(); return off; }, []);
-  return <pre style={{ padding: 16, fontSize: 12 }}>{s ? JSON.stringify({ n: s.occupants.length, occupants: s.occupants.map((o) => [o.name, o.stationId, o.status, o.currentTool]), lastLog: s.log.at(-1) }, null, 2) : 'waiting…'}</pre>;
+  const setState = useOffice((u) => u.setState);
+  useEffect(() => { const off = window.office.onState(setState); window.office.requestState(); return off; }, [setState]);
+  return <div style={{ display: 'flex', height: '100vh' }}><Floor /></div>;
 }
 createRoot(document.getElementById('root')!).render(<App />);
